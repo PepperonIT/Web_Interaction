@@ -1,5 +1,0 @@
-import qi
-
-class AskWikipedia:
-    def __init__(self, service):
-        self.service = service
