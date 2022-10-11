@@ -31,4 +31,7 @@ class PepperConnection():
     
     def get_tablet_service(self):
         return self.session.service("ALTabletService")
+    
+    def get_speech_recognition(self):
+        return self.session.service("ALSpeechRecognition")
 
