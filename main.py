@@ -7,9 +7,9 @@ def main():
     conn = PepperConnection("ip", 9559, "name", os.getenv("password")) 
     conn.connect()   
     
-    tts = conn.get_speech_service()
+    tts_service = conn.get_speech_service()
 
-    tts.say("Hello there")
     
+    #tts.say("Hello there")
     
 main()

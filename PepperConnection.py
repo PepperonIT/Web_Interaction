@@ -34,4 +34,6 @@ class PepperConnection():
     
     def get_speech_recognition(self):
         return self.session.service("ALSpeechRecognition")
+    
+    
 
