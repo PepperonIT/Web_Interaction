@@ -1,11 +1,9 @@
 from PepperConnection import PepperConnection
-#from interactions.wikipedia import Wikipedia
 import os
 >>>>>>> dafe96a... added interactions folder
 
 
 def main():
-    # session = qi.Session()
     conn = PepperConnection("ip", 9559, "name", os.getenv("password")) 
     conn.connect()   
     
@@ -13,7 +11,9 @@ def main():
 
     tts.say("Hello there")
     
-    #Wikipedia.ask_wikipedia()
-    
-
+    #ask_wikipedia(tts)
 main()
+
+#def ask_wikipedia(tts):
+#    tts.say("Success")
+
