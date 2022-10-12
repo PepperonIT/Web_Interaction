@@ -11,9 +11,5 @@ def main():
 
     tts.say("Hello there")
     
-    #ask_wikipedia(tts)
+    
 main()
-
-#def ask_wikipedia(tts):
-#    tts.say("Success")
-
