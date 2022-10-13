@@ -35,5 +35,11 @@ class PepperConnection():
     def get_speech_recognition(self):
         return self.session.service("ALSpeechRecognition")
     
+    def get_audio_device(self):
+        return self.session.service("ALAudioDevice")
+    
+    def get_memory(self):
+        return self.session.service("ALMemory")
+    
     
 
