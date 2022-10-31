@@ -1,12 +1,12 @@
 # \<Web_Interaction>
 Provides added web interactive funcationality, such as:
-    - Speech_to_text
-    - ask_wikipedia
-    - ask_google
+    *- speech_to_text*
+    *- ask_wikipedia*
+    *- ask_google*
 
-Speech_to_text: takes a wav recording as input and outputs a transcribed string, currently only supporting en_US
-ask_wikipedia: Listens for a word/phrase, and return the first 2 sentences of that wikipedia search
-ask_google: currently not working properly
+*speech_to_text:* takes a wav recording as input and outputs a transcribed string, currently only supporting en_US
+*ask_wikipedia:* Listens for a word/phrase, and return the first 2 sentences of that wikipedia search
+*ask_google:* currently not working properly
 
 # tools / installation
 
