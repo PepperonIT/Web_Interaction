@@ -17,6 +17,7 @@ The tools used are revolves around speech recognition, transcribing and API func
 > [devcontainer](.devcontainer/README.md)
 In order to gain the enviroment, we are using a docker enviroment created by out rock paper and sciccors group, for further intallation instructions:
 
+## Tools
 
 > [wikipedia](tools.md)
 Simple API calls to wikipedia, chosen for its simplicity.
