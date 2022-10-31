@@ -1,11 +1,12 @@
 import qi
-import wikipedia
 import speech_recognition
 import playsound
 import time
 import paramiko
 from cryptography.hazmat.backends import default_backend
 from scp import SCPClient
+import tools
+
 
 class Robot:
 
@@ -58,14 +59,14 @@ class Robot:
         print("[INFO]: Speech recognition is in progress. Say something.")
         while True:
             print(self.memory_service.getData("ALSpeechRecognition/Status"))
-            if self.memory_service.getData("ALSpeechRecognition/Status") == "SpeechDetected":
-                self.audio_recorder.startMicrophonesRecording("/home/nao/speech.wav", "wav", 48000, (0, 0, 1, 0))
-                print("[INFO]: Robot is listening to you")
-                self.blink_eyes([255, 255, 0])
-                break
+            # if self.memory_service.getData("ALSpeechRecognition/Status") == "SpeechDetected":
+            self.audio_recorder.startMicrophonesRecording("/home/nao/speech.wav", "wav", 48000, (0, 0, 1, 0))
+            print("[INFO]: Robot is listening to you")
+            self.blink_eyes([255, 255, 0])
+            break
 
         while True:
-            time.sleep(4)
+            time.sleep(2)
             # if self.memory_service.getData("ALSpeechRecognition/Status") == "EndOfProcess":
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")
@@ -82,7 +83,9 @@ class Robot:
         audio_file = speech_recognition.AudioFile("/tmp/" + audio_file)
         with audio_file as source:
             audio = self.recognizer.record(source)
+            # recognized = self.recognizer.recognize_google(audio, language="en_US")
             recognized = self.recognizer.recognize_google(audio, language="en_US")
+            print("[INFO]: s2t:" + recognized)
         return recognized
 
     def say(self, text):
@@ -101,38 +104,33 @@ class Robot:
     
     def ask_wikipedia(self):
         #stuff
+        time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
         self.set_awareness(False)
         self.say("Give me a question wikipedia")
+        # self.say("vad vill du mig")
         question = self.listen()
         self.say("I will tell you")
-        answer = self.get_knowledge(question)
+        # self.say("jag har dig bror")
+        answer = tools.get_knowledge_wikipedia(question)
         self.say(answer)
         self.set_awareness(True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
 
-    def get_knowledge(self, term):
-        #stuff
-        summary = wikipedia.summary(term, sentences=2)
-        return summary
 
-def main():
-    #session = qi.Session()
-    #session.connect("tcp://{0}:{1}".format("130.240.238.32", 9559))
+    def ask_google(self):
+        time.sleep(1)
+        self.speech_service.setAudioExpression(False)
+        self.speech_service.setVisualExpression(False)
+        self.set_awareness(False)
+        self.say("Give me a question google")
+        question = self.listen()
+        self.say("I will tell you")
+        answer = tools.get_knowledge_google(question)
+        self.say(answer)
+        self.set_awareness(True)
+        self.speech_service.setAudioExpression(True)
+        self.speech_service.setVisualExpression(True)
 
-    pepper = Robot("130.240.238.32", "9559")
-    #stuff
-    while True:
-        pepper.say("Give me a question main")
-        try:
-            pepper.ask_wikipedia()
-        except Exception as error:
-            print(error)
-            pepper.say("I am not sure what to say")
-
-# pepper = Robot("130.240.238.32", "9559")
-# pepper.ask_wikipedia()
-
-main()
