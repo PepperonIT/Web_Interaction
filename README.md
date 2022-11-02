@@ -23,10 +23,6 @@ In order to gain the enviroment, we are using a docker enviroment created by out
 Simple API calls to wikipedia, chosen for its simplicity.
 https://pypi.org/project/wikipedia/
 
-> [search_google](tools.md)
-Currently trying during development.
-https://pypi.org/project/search-google/
-
 > [SpeechRecognition](tools.md)
 Speech Recognition library chosen for its siplicity.
 https://pypi.org/project/SpeechRecognition/
@@ -42,6 +38,10 @@ https://pypi.org/project/scp/
 > [paramiko](tools.md)
 Helper for scp.
 https://pypi.org/project/paramiko/
+
+> [cryptography](tools.md)
+Helper for scp (might be obselete)
+https://pypi.org/project/cryptography/
 
 # Usage
 Currently the entire functionality is run from a while true loop in main, so in order to run ask_wikipedia you:
