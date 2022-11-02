@@ -35,10 +35,12 @@ class Robot:
         self.dialog_service = self.session.service("ALDialog")
         self.audio_recorder = self.session.service("ALAudioRecorder")
         self.led_service = self.session.service("ALLeds")
+        self.tablet_service = self.session.service("ALTabletService")
 
         self.recognizer = speech_recognition.Recognizer()
 
         print("[INFO]: Robot is initialized at " + ip_address + ":" + port)
+        self.tablet_service.preLoadImage("https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
 
     def blink_eyes(self, rgb):
         self.led_service.fadeRGB('AllLeds', rgb[0], rgb[1], rgb[2], 1.0)
@@ -104,6 +106,7 @@ class Robot:
     
     def ask_wikipedia(self):
         #stuff
+        self.tablet_service.showImage("https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
@@ -113,24 +116,21 @@ class Robot:
         question = self.listen()
         self.say("I will tell you")
         # self.say("jag har dig bror")
+        answer2 = tools.get_image_wikipedia(question)
+        #############TABLET IMAGE###############
+        print("[INFO]: answer2 (wikiimage): " + answer2)
+        self.tablet_service.showImage(answer2)
+        #############SAY ANSWER##################
         answer = tools.get_knowledge_wikipedia(question)
         self.say(answer)
         self.set_awareness(True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
+        time.sleep(2)
+        self.tablet_service.showImage("https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
+        
 
 
-    def ask_google(self):
-        time.sleep(1)
-        self.speech_service.setAudioExpression(False)
-        self.speech_service.setVisualExpression(False)
-        self.set_awareness(False)
-        self.say("Give me a question google")
-        question = self.listen()
-        self.say("I will tell you")
-        answer = tools.get_knowledge_google(question)
-        self.say(answer)
-        self.set_awareness(True)
-        self.speech_service.setAudioExpression(True)
-        self.speech_service.setVisualExpression(True)
+#    def ask_google(self):
+
 
