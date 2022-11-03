@@ -7,7 +7,7 @@ pipenv install --dev
 #pipenv install playsound
 #pipenv install scp
 #pipenv install paramiko
-#pipenv install search-google
+#pipenv install cryptography
 
 echo "Finished installing dev tools"
 .
