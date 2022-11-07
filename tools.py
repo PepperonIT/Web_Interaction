@@ -1,5 +1,6 @@
 """
 Robot module
+Helper tools for the main funtions
 """
 
 import wikipedia
