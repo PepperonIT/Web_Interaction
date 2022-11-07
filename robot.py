@@ -76,7 +76,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
 
-        return download.speech_to_text_swe(self, "speech.wav")
+        return download.speech_to_text_swe("speech.wav")
 
     def speech_to_text(self, audio_file):
         """audio_file"""
