@@ -24,3 +24,4 @@ def set_awareness(self, state):
     else:
         self.awareness_service.pauseAwareness()
         print("[INFO]: Awareness is paused")# pylint: disable=superfluous-parens
+        
