@@ -1,14 +1,15 @@
 """
 Robot module
+Holds the methods for listening as well as the functions that call them
 """
 import time
 import qi
 import speech_recognition
 import paramiko
 from scp import SCPClient
-import requests
 import tools
-
+import controller
+import download
 
 
 class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
@@ -38,28 +39,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.speech_service = self.session.service("ALSpeechRecognition")
         self.dialog_service = self.session.service("ALDialog")
         self.audio_recorder = self.session.service("ALAudioRecorder")
-        self.led_service = self.session.service("ALLeds")
         self.tablet_service = self.session.service("ALTabletService")
+        self.led_service = self.session.service("ALLeds")
 
         self.recognizer = speech_recognition.Recognizer() #ENGLISH QUICK TRANSCRIBING
 
         print("[INFO]: Robot is initialized at " + ip_address + ":" + port)# pylint: disable=superfluous-parens
         self.tablet_service.preLoadImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
-
-    def blink_eyes(self, rgb):
-        """rbg"""
-        self.led_service.fadeRGB('AllLeds', rgb[0], rgb[1], rgb[2], 1.0)
-
-    def turn_off_leds(self):
-        """."""
-        self.blink_eyes([0, 0, 0])
-
-    def download_file(self, file_name):
-        """file_name"""
-        self.scp.get(file_name, local_path="/tmp/")
-        print("[INFO]: File "+ file_name + " downloaded")# pylint: disable=superfluous-parens
-        self.scp.close()
 
 
     def listen(self):
@@ -74,7 +61,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             self.audio_recorder.startMicrophonesRecording(
                 "/home/nao/speech.wav", "wav", 48000, (0, 0, 1, 0))
             print("[INFO]: Robot is listening to you")# pylint: disable=superfluous-parens
-            self.blink_eyes([255, 255, 0])
+            controller.blink_eyes(self, [255, 255, 0])
             break
 
         while True:
@@ -82,14 +69,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
-            self.blink_eyes([0, 0, 0])
+            controller.blink_eyes(self, [0, 0, 0])
             break
 
-        self.download_file("speech.wav")
+        download.download_file(self, "speech.wav")
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
 
-        return self.speech_to_text_swe("speech.wav")
+        return download.speech_to_text_swe(self, "speech.wav")
 
     def speech_to_text(self, audio_file):
         """audio_file"""
@@ -100,33 +87,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             print("[INFO]: s2t:" + recognized)# pylint: disable=superfluous-parens
         return recognized
 
-    def speech_to_text_swe(self, audio_file):# pylint: disable=no-self-use
-        """audio_file"""
-        url = 'http://92.32.44.72:5000/recieve'# server request endpoint
-        audio_file = {"file": open('/tmp/' + audio_file, 'rb')}
-        with open('/tmp/speech.wav', 'rb') as source:
-            requests.post(url, files={'fieldname': source})
-            request = requests.post(
-                url, files=audio_file)# Recieves the json with the transcibed text
-            recognized = request.text[11:-2]# budget json handling, the text
-            print("[INFO]: s2t:" + recognized)# pylint: disable=superfluous-parens
-        return recognized
-
-    def say(self, text):
-        """text"""
-        self.tts_service.say(text)
-        print("[INFO]: Robot says: " + text)# pylint: disable=superfluous-parens
-
-    def set_awareness(self, state):
-        """state"""
-        if state:
-            self.awareness_service.resumeAwareness()
-            print("[INFO]: Awareness is turned on")# pylint: disable=superfluous-parens
-        else:
-            self.awareness_service.pauseAwareness()
-            print("[INFO]: Awareness is paused")# pylint: disable=superfluous-parens
-
-
     def ask_wikipedia(self):
         """ask_wikipedia"""
         self.tablet_service.showImage(
@@ -134,17 +94,17 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
-        self.set_awareness(False)
+        controller.set_awareness(self, False)
         # self.say("Give me a question wikipedia")
-        self.say("vad vill du mig")
+        controller.say(self, "vad vill du mig")
         question = self.listen()
-        # self.say("I will tell you")
-        self.say("jag har dig bror")
+        # controller.say(self, "I will tell you")
+        controller.say(self, "jag har dig bror")
         answer2 = tools.get_image_wikipedia(question)
         self.tablet_service.showImage(answer2)
         answer = tools.get_knowledge_wikipedia(question)
-        self.say(answer)
-        self.set_awareness(True)
+        controller.say(self, answer)
+        controller.set_awareness(self, True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
         time.sleep(2)

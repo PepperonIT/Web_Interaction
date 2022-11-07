@@ -9,9 +9,6 @@ def main():
     while True:
         try:
             pepper.ask_wikipedia()
-            # pepper.ask_google()
         except Exception as error:# pylint: disable=broad-except
             print(error)# pylint: disable=superfluous-parens
-            # pepper.say("I dont know mate")
-            pepper.say("Vet inte fett oklart")
 main()
