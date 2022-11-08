@@ -1,2 +1,4 @@
 .env
-testing.py
+*.pyc
+temp_files/
+config.py
