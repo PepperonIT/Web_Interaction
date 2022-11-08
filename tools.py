@@ -2,7 +2,6 @@
 Robot module
 Helper tools for the main funtions
 """
-
 import wikipedia
 
 def get_knowledge_wikipedia(term):
