@@ -1,12 +1,7 @@
 #!/bin/bash
 
 # Install project dependencies
-pipenv install --dev
-#pipenv install wikipedia
-#pipenv install SpeechRecognition
-#pipenv install scp
-#pipenv install paramiko
-#pipenv install requests
+pip install -r requirements.txt -r requirements-dev.txt
 
 echo "Finished installing dev tools"
 .
