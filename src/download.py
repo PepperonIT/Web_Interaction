@@ -3,6 +3,7 @@ Download module
 Allows Pepper to download the recorded audio file
 """
 import requests
+import config
 
 def download_file(self, file_name):
     """file_name"""
@@ -12,7 +13,8 @@ def download_file(self, file_name):
 
 def speech_to_text_swe(audio_file):# pylint: disable=no-self-use
     """audio_file"""
-    url = 'http://92.32.44.72:5000/recieve'# server request endpoint
+    url = ('http://' + config.SERVER_IP_ADDRESS +
+           ':' + config.SERVER_PORT + '/recieve')# server request endpoint
     audio_file = {"file": open('/tmp/' + audio_file, 'rb')}
     with open('/tmp/speech.wav', 'rb') as source:
         requests.post(url, files={'fieldname': source})

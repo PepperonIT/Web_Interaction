@@ -2,10 +2,11 @@
 Main module
 """
 from robot import Robot
+import config
 
 def main():
     """infinite loop for testing"""
-    pepper = Robot("130.240.238.32", "9559")
+    pepper = Robot(config.IP_ADDRESS, config.PORT)
     while True:
         try:
             pepper.ask_wikipedia()
