@@ -10,6 +10,7 @@ from scp import SCPClient
 import tools
 import controller
 import download
+import config
 
 
 class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
@@ -17,7 +18,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     def __init__(self, ip_address, port):
         """ip, port"""
         self.session = qi.Session()
-        self.session.connect("tcp://" + ip_address + ":" + str(port))
+        self.session.connect("tcp://" + ip_address + ":" + port)
 
         self.ip_address = ip_address
         self.port = port
@@ -25,7 +26,8 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.load_system_host_keys()
-        ssh.connect(hostname=self.ip_address, username="name", password="password", allow_agent=False)
+        ssh.connect(hostname=self.ip_address, username=config.USERNAME,
+                    password=config.PASSWORD, allow_agent=False)
         self.scp = SCPClient(ssh.get_transport())
 
         self.tts_service = self.session.service("ALAnimatedSpeech")
