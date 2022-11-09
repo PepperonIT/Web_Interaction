@@ -42,6 +42,3 @@ def get_image_google(term):
     links = str(links[0])
     print("[INFO]: google_link: " + links)# pylint: disable=superfluous-parens
     return links
-
-term = "vatten buffalo"
-get_image_google(term)
