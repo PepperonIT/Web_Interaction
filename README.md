@@ -1,6 +1,6 @@
 # \<Web_Interaction>
 Provides added web interactive funcationality, such as:
-    *- speech_to_text_swe*
+    *- speech_to_text*
     *- ask_wikipedia*
     *- download_file*
     *- google_search*

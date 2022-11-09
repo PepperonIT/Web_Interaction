@@ -70,7 +70,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             break
 
         download.download_file(self, "speech.wav")
-        return download.speech_to_text_swe("speech.wav")
+        return download.speech_to_text("speech.wav")
 
     def ask(self):
         """ask"""
