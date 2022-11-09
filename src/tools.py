@@ -7,21 +7,16 @@ import wikipedia
 import search_google.api
 import config
 
-def get_knowledge_wikipedia(term):
+def get_info_wikipedia(term):
     """term"""
     wikipedia.set_lang("sv")
     summary = wikipedia.summary(term, sentences=1)
-    return summary
-
-def get_image_wikipedia(term):
-    """term"""
-    wikipedia.set_lang("sv")
     page = wikipedia.page(term)
     wikiimage = page.images[0]
     print("[INFO]: wikiimage: " + wikiimage)# pylint: disable=superfluous-parens
-    return wikiimage
+    return summary, wikiimage
 
-def get_image_google(term):
+def get_info_google(term):
     """term"""
     # Define buildargs for api api
     buildargs = {

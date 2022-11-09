@@ -2,6 +2,7 @@
 Robot module
 Holds the methods for listening as well as the functions that call them
 """
+
 import time
 import qi
 import paramiko
@@ -10,7 +11,6 @@ import tools
 import controller
 import download
 import config
-
 
 class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     """class robot"""
@@ -42,8 +42,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service = self.session.service("ALTabletService")
         self.led_service = self.session.service("ALLeds")
 
-        self.recognizer = speech_recognition.Recognizer() #ENGLISH QUICK TRANSCRIBING
-
         print("[INFO]: Robot is initialized at " + ip_address + ":" + port)# pylint: disable=superfluous-parens
         self.tablet_service.preLoadImage( # wiki logo
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
@@ -52,8 +50,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
     def listen(self):
         """listen"""
-        self.speech_service.setAudioExpression(False)
-        self.speech_service.setVisualExpression(False)
         self.audio_recorder.stopMicrophonesRecording()
         print("[INFO]: Speech recognition is in progress. Say something.")# pylint: disable=superfluous-parens
         while True:
@@ -74,9 +70,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             break
 
         download.download_file(self, "speech.wav")
-        self.speech_service.setAudioExpression(True)
-        self.speech_service.setVisualExpression(True)
-
         return download.speech_to_text_swe("speech.wav")
 
     def ask(self):
@@ -99,9 +92,8 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
         question = self.ask()
-        answer2 = tools.get_image_wikipedia(question)
+        answer, answer2 = tools.get_info_wikipedia(question)
         self.tablet_service.showImage(answer2)
-        answer = tools.get_knowledge_wikipedia(question)
         controller.say(self, answer)
         time.sleep(2)
         self.tablet_service.showImage(
@@ -112,7 +104,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
         question = self.ask()
-        answer = tools.get_image_google(question)
+        answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
         time.sleep(4)
         self.tablet_service.showImage(
