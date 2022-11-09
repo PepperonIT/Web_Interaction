@@ -1,6 +1,5 @@
 # \<Web_Interaction>
 Provides added web interactive funcationality, such as:
-    *- speech_to_text*
     *- speech_to_text_swe*
     *- ask_wikipedia*
     *- download_file*
@@ -35,10 +34,6 @@ https://pypi.org/project/wikipedia/
 > [google_search](tools.md)
 Simple API calls to google, chosen for simplicity with image urls.
 https://pypi.org/project/google_search
-
-> [SpeechRecognition](tools.md)
-Speech Recognition library chosen for its siplicity.
-https://pypi.org/project/SpeechRecognition/
 
 > [scp](tools.md)
 SSH:ing to pepper in order to have permission to download the wav soundfile.

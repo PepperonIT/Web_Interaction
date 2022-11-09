@@ -4,7 +4,6 @@ Holds the methods for listening as well as the functions that call them
 """
 import time
 import qi
-import speech_recognition
 import paramiko
 from scp import SCPClient
 import tools
@@ -50,7 +49,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         self.tablet_service.preLoadImage( # google logo
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
-            
+
     def listen(self):
         """listen"""
         self.speech_service.setAudioExpression(False)
@@ -80,35 +79,30 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
         return download.speech_to_text_swe("speech.wav")
 
-    def speech_to_text(self, audio_file):
-        """audio_file"""
-        audio_file = speech_recognition.AudioFile("/tmp/" + audio_file)
-        with audio_file as source:
-            audio = self.recognizer.record(source)
-            recognized = self.recognizer.recognize_google(audio, language="en_US")
-            print("[INFO]: s2t:" + recognized)# pylint: disable=superfluous-parens
-        return recognized
+    def ask(self):
+        """ask"""
+        time.sleep(1)
+        self.speech_service.setAudioExpression(False)
+        self.speech_service.setVisualExpression(False)
+        controller.set_awareness(self, False)
+        controller.say(self, "vad vill du mig")
+        question = self.listen()
+        controller.say(self, "jag har dig bror")
+        controller.set_awareness(self, True)
+        self.speech_service.setAudioExpression(True)
+        self.speech_service.setVisualExpression(True)
+        return question
 
     def ask_wikipedia(self):
         """ask_wikipedia"""
         self.tablet_service.showImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
-        self.speech_service.setAudioExpression(False)
-        self.speech_service.setVisualExpression(False)
-        controller.set_awareness(self, False)
-        # self.say("Give me a question wikipedia")
-        controller.say(self, "vad vill du mig")
-        question = self.listen()
-        # controller.say(self, "I will tell you")
-        controller.say(self, "jag har dig bror")
+        question = self.ask()
         answer2 = tools.get_image_wikipedia(question)
         self.tablet_service.showImage(answer2)
         answer = tools.get_knowledge_wikipedia(question)
         controller.say(self, answer)
-        controller.set_awareness(self, True)
-        self.speech_service.setAudioExpression(True)
-        self.speech_service.setVisualExpression(True)
         time.sleep(2)
         self.tablet_service.showImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
@@ -117,18 +111,9 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """ask_google"""
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
-        time.sleep(1)
-        self.speech_service.setAudioExpression(False)
-        self.speech_service.setVisualExpression(False)
-        controller.set_awareness(self, False)
-        controller.say(self, "vad vill du mig")
-        question = self.listen()
-        controller.say(self, "jag har dig bror")
+        question = self.ask()
         answer = tools.get_image_google(question)
         self.tablet_service.showImage(answer)
-        controller.set_awareness(self, True)
-        self.speech_service.setAudioExpression(True)
-        self.speech_service.setVisualExpression(True)
         time.sleep(4)
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")

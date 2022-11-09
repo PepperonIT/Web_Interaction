@@ -9,7 +9,7 @@ def main():
     pepper = Robot(config.IP_ADDRESS, config.PORT)
     while True:
         try:
-            pepper.ask_google()
+            pepper.ask_wikipedia()
         except Exception as error:# pylint: disable=broad-except
             print(error)# pylint: disable=superfluous-parens
 main()
