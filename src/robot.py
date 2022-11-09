@@ -46,10 +46,11 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.recognizer = speech_recognition.Recognizer() #ENGLISH QUICK TRANSCRIBING
 
         print("[INFO]: Robot is initialized at " + ip_address + ":" + port)# pylint: disable=superfluous-parens
-        self.tablet_service.preLoadImage(
+        self.tablet_service.preLoadImage( # wiki logo
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
-
-
+        self.tablet_service.preLoadImage( # google logo
+            "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
+            
     def listen(self):
         """listen"""
         self.speech_service.setAudioExpression(False)
@@ -111,3 +112,23 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         time.sleep(2)
         self.tablet_service.showImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
+
+    def ask_google(self):
+        """ask_google"""
+        self.tablet_service.showImage(
+            "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
+        time.sleep(1)
+        self.speech_service.setAudioExpression(False)
+        self.speech_service.setVisualExpression(False)
+        controller.set_awareness(self, False)
+        controller.say(self, "vad vill du mig")
+        question = self.listen()
+        controller.say(self, "jag har dig bror")
+        answer = tools.get_image_google(question)
+        self.tablet_service.showImage(answer)
+        controller.set_awareness(self, True)
+        self.speech_service.setAudioExpression(True)
+        self.speech_service.setVisualExpression(True)
+        time.sleep(4)
+        self.tablet_service.showImage(
+            "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")

@@ -4,11 +4,13 @@ Provides added web interactive funcationality, such as:
     *- speech_to_text_swe*
     *- ask_wikipedia*
     *- download_file*
+    *- google_search*
 
 *speech_to_text:* takes a wav recording as input and outputs a transcribed string, currently only supporting en_US.  
 *speech_to_text_swe:* send the wav file to a backend, that transcribes it into swedish, return a json with text.  
 *ask_wikipedia:* Listens for a word/phrase, and return the first 2 sentences of that wikipedia search.  
 *download_file:* Downloads audio file thats recorded onto Pepper.  
+*google_search:* Listens for a word/phrase, and return 1 image from google. custom search engine.
 
 # tools / installation
 
@@ -29,6 +31,10 @@ https://github.com/openai/whisper
 > [wikipedia](tools.md)
 Simple API calls to wikipedia, chosen for its simplicity.
 https://pypi.org/project/wikipedia/
+
+> [google_search](tools.md)
+Simple API calls to google, chosen for simplicity with image urls.
+https://pypi.org/project/google_search
 
 > [SpeechRecognition](tools.md)
 Speech Recognition library chosen for its siplicity.
