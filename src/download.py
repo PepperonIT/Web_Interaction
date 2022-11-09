@@ -11,7 +11,7 @@ def download_file(self, file_name):
     print("[INFO]: File "+ file_name + " downloaded")# pylint: disable=superfluous-parens
     self.scp.close()
 
-def speech_to_text_swe(audio_file):# pylint: disable=no-self-use
+def speech_to_text(audio_file):# pylint: disable=no-self-use
     """audio_file"""
     url = ('http://' + config.SERVER_IP_ADDRESS +
            ':' + config.SERVER_PORT + '/recieve')# server request endpoint

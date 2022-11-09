@@ -1,6 +1,7 @@
 """
 Main module
 """
+
 from robot import Robot
 import config
 
