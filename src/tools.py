@@ -39,7 +39,9 @@ def get_image_google(term):
     results = search_google.api.results(buildargs, cseargs)
     links = results.get_values('items', 'link')
     links = results.links
-    links = str(links)
-    links = links[3:-2]
+    links = str(links[0])
     print("[INFO]: google_link: " + links)# pylint: disable=superfluous-parens
     return links
+
+term = "vatten buffalo"
+get_image_google(term)
