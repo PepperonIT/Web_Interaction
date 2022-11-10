@@ -8,7 +8,9 @@ import search_google.api
 import config
 
 def get_info_wikipedia(term):
-    """term"""
+    """
+    term: A string as input into a wikipedia search
+    """
     wikipedia.set_lang("sv")
     summary = wikipedia.summary(term, sentences=1)
     page = wikipedia.page(term)
@@ -17,7 +19,9 @@ def get_info_wikipedia(term):
     return summary, wikiimage
 
 def get_info_google(term):
-    """term"""
+    """
+    term: A string as input into a google search engine
+    """
     # Define buildargs for api api
     buildargs = {
     "serviceName": "customsearch",

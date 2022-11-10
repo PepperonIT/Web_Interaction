@@ -5,8 +5,7 @@ Provides added web interactive funcationality, such as:
     *- download_file*
     *- google_search*
 
-*speech_to_text:* takes a wav recording as input and outputs a transcribed string, currently only supporting en_US.  
-*speech_to_text_swe:* send the wav file to a backend, that transcribes it into swedish, return a json with text.  
+*speech_to_text:* send the wav file to a backend, that transcribes it into swedish, return a json with text.  
 *ask_wikipedia:* Listens for a word/phrase, and return the first 2 sentences of that wikipedia search.  
 *download_file:* Downloads audio file thats recorded onto Pepper.  
 *google_search:* Listens for a word/phrase, and return 1 image from google. custom search engine.

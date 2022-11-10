@@ -1,1 +1,2 @@
 pipreqs==0.4.11
+pylint==1.9.5

@@ -15,7 +15,10 @@ import config
 class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     """class robot"""
     def __init__(self, ip_address, port):
-        """ip, port"""
+        """
+        ip: Peppers IP address
+        port: Peppers port
+        """
         self.session = qi.Session()
         self.session.connect("tcp://" + ip_address + ":" + port)
 
@@ -49,7 +52,11 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
 
     def listen(self):
-        """listen"""
+        """
+        Starts recording audio for 2 seconds,
+            then calls download.download_file
+                then returns download.speech_to_text
+        """
         self.audio_recorder.stopMicrophonesRecording()
         print("[INFO]: Speech recognition is in progress. Say something.")# pylint: disable=superfluous-parens
         while True:
@@ -66,28 +73,37 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
-            controller.blink_eyes(self, [0, 0, 0])
+            controller.blink_eyes(self, [150, 150, 0])
+
             break
 
         download.download_file(self, "speech.wav")
         return download.speech_to_text("speech.wav")
 
     def ask(self):
-        """ask"""
+        """
+        Helper method that sets the appropriate expressensions
+            and then calls listen, returning the question(string)
+        """
         time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
         controller.set_awareness(self, False)
-        controller.say(self, "vad vill du mig")
+        controller.say(self, "vad undrar du gubben")
         question = self.listen()
-        controller.say(self, "jag har dig bror")
+        controller.say(self, "jag har dig gubben")
         controller.set_awareness(self, True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
+        controller.blink_eyes(self, [50, 50, 0])
         return question
 
     def ask_wikipedia(self):
-        """ask_wikipedia"""
+        """
+        Calls self.ask to get the question
+            Calls get_info_wikipedia with a string as input
+                then says the output, shows the output picutre
+        """
         self.tablet_service.showImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
@@ -96,16 +112,18 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.showImage(answer2)
         controller.say(self, answer)
         time.sleep(2)
-        self.tablet_service.showImage(
-            "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
+        controller.reset_tablet(self)
 
     def ask_google(self):
-        """ask_google"""
+        """
+        Calls self.ask to get the question
+            Calls get_info_google with a string as input
+                then shows the output picutre
+        """
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
         question = self.ask()
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
         time.sleep(4)
-        self.tablet_service.showImage(
-            "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
+        controller.reset_tablet(self)
