@@ -69,7 +69,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             break
 
         while True:
-            time.sleep(2)
+            time.sleep(3)
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
@@ -89,9 +89,9 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
         controller.set_awareness(self, False)
-        controller.say(self, "vad undrar du gubben")
+        controller.say(self, "vad undrar du?")
         question = self.listen()
-        controller.say(self, "jag har dig gubben")
+        controller.say(self, "jag tror jag hittade svaret")
         controller.set_awareness(self, True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
@@ -125,5 +125,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         question = self.ask()
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
-        time.sleep(4)
+        controller.say(self, "jag letade efter " + question)
+        time.sleep(8)
         controller.reset_tablet(self)
