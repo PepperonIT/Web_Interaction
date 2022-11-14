@@ -17,17 +17,22 @@ def rotate_eyes(self, rgb):
 
 def reset_leds(self):
     """Reset the eyes"""
-    self.blink_eyes([255, 255, 255])
+    blink_eyes(self, [255, 255, 255])
 
 def reset_tablet(self):
     """Reset the tablet"""
     self.tablet_service.hideImage()
-    
+
 def reset_head(self):
     """Reset the head"""
 
 def reset_body(self):
     """Reset the body, primarly arms"""
+
+def reset_all(self):
+    """Resets the entire pepper thingy"""
+    reset_tablet(self)
+    reset_leds(self)
 
 def say(self, text):
     """
