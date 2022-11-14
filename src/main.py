@@ -2,10 +2,9 @@
 Main module
 """
 
-from robot import Robot
 import config
-import argparse
 import click
+from robot import Robot
 
 @click.command()
 @click.option(
@@ -22,17 +21,15 @@ def cli(wikipedia, key):
     """infinite loop for testing"""
     if wikipedia:
         if key:
-            pepper.ask_wikipedia_api(key)
+            PEPPER.ask_wikipedia_api(key)
         else:
-            pepper.ask_wikipedia()
+            PEPPER.ask_wikipedia()
     if not wikipedia:
         if key:
-            pepper.ask_google_api(key)
+            PEPPER.ask_google_api(key)
         else:
-            pepper.ask_google()
-     
+            PEPPER.ask_google()
 
-        
 if __name__ == '__main__':
-    pepper = Robot(config.IP_ADDRESS, config.PORT)
-    cli()
+    PEPPER = Robot(config.IP_ADDRESS, config.PORT)
+    cli()# pylint: disable=no-value-for-parameter
