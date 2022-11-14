@@ -20,7 +20,7 @@ The tools used are revolves around speech recognition, transcribing and API func
 In order to gain the enviroment, we are using a docker enviroment created by out rock paper and sciccors group, for further intallation instructions:
 
 ## server/whisper
-> [whisper](tools.md)
+> [whisper](https://github.com/D7017E/Whisper_server/blob/main/README.md)
 OpenAI's whisper is being used for transcribing. Server info TODO
 https://github.com/openai/whisper
 
