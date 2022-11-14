@@ -108,6 +108,12 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
         question = self.ask()
+        self.ask_wikipedia_api(question)
+
+    def ask_wikipedia_api(self, question):
+        """
+        question: the string input to wiki api
+        """
         answer, answer2 = tools.get_info_wikipedia(question)
         self.tablet_service.showImage(answer2)
         controller.say(self, answer)
@@ -123,6 +129,12 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
         question = self.ask()
+        self.ask_google_api(question)
+
+    def ask_google_api(self, question):
+        """
+        question: string input to google api
+        """
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
         controller.say(self, "jag letade efter " + question)
