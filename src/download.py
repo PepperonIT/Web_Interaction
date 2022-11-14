@@ -6,13 +6,21 @@ import requests
 import config
 
 def download_file(self, file_name):
-    """file_name"""
+    """
+    file_name: Input audio file to download and store
+    """
     self.scp.get(file_name, local_path="/tmp/")
     print("[INFO]: File "+ file_name + " downloaded")# pylint: disable=superfluous-parens
     self.scp.close()
 
 def speech_to_text(audio_file):# pylint: disable=no-self-use
-    """audio_file"""
+    """
+    audio_file: Input audio file to send to the server
+
+    Sends the audio file to the server for transcribing,
+        recieves a json of the transcribed text
+            returns the text in a string format
+    """
     url = ('http://' + config.SERVER_IP_ADDRESS +
            ':' + config.SERVER_PORT + '/recieve')# server request endpoint
     audio_file = {"file": open('/tmp/' + audio_file, 'rb')}
@@ -21,5 +29,5 @@ def speech_to_text(audio_file):# pylint: disable=no-self-use
         request = requests.post(
             url, files=audio_file)# Recieves the json with the transcibed text
         recognized = request.text[11:-2]# budget json handling, the text
-        print("[INFO]: s2t:" + recognized)# pylint: disable=superfluous-parens
+        print("####### \n: s2t:" + recognized + "\n #########")# pylint: disable=superfluous-parens
     return recognized
