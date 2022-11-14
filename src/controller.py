@@ -3,52 +3,45 @@ Controller module
 Visual aid methods for Pepper that shows some interactivity
 """
 
-def blink_eyes(self, rgb):
+def blink_eyes(service, rgb):
     """
     rgb: the hexadecimal color value
     """
-    self.led_service.fadeRGB('AllLeds', rgb[0], rgb[1], rgb[2], 1.0)
+    service.fadeRGB('AllLeds', rgb, 1.0)
 
-def rotate_eyes(self, rgb):
+def rotate_eyes(service, rgb, sleep):
     """
     rgb: the hexadecimal color value
     """
-    self.led_service.rotateEyes('AllLeds', rgb[0], rgb[1], rgb[2], 1.0)
+    service.rotateEyes(rgb, 1.0, sleep)
 
-def reset_leds(self):
+def reset_leds(service):
     """Reset the eyes"""
-    blink_eyes(self, [255, 255, 255])
+    blink_eyes(service, 0xFFFFFF)
 
-def reset_tablet(self):
+def reset_tablet(service):
     """Reset the tablet"""
-    self.tablet_service.hideImage()
+    service.hideImage()
 
-def reset_head(self):
-    """Reset the head"""
-
-def reset_body(self):
-    """Reset the body, primarly arms"""
-
-def reset_all(self):
+def reset_all(led_service, tablet_service):
     """Resets the entire pepper thingy"""
-    reset_tablet(self)
-    reset_leds(self)
+    reset_tablet(tablet_service)
+    reset_leds(led_service)
 
-def say(self, text):
+def say(service, text):
     """
     text: A string Pepper will say
     """
-    self.tts_service.say(text)
+    service.say(text)
     print("[INFO]: Robot says: " + text)# pylint: disable=superfluous-parens
 
-def set_awareness(self, state):
+def set_awareness(service, state):
     """
     state: True of False, for awareness On or Off
     """
     if state:
-        self.awareness_service.resumeAwareness()
+        service.resumeAwareness()
         print("[INFO]: Awareness is turned on")# pylint: disable=superfluous-parens
     else:
-        self.awareness_service.pauseAwareness()
+        service.pauseAwareness()
         print("[INFO]: Awareness is paused")# pylint: disable=superfluous-parens
-        

@@ -4,13 +4,13 @@ Holds the methods for listening as well as the functions that call them
 """
 
 import time
+import config
 import qi
 import paramiko
 from scp import SCPClient
 import tools
 import controller
 import download
-import config
 
 class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     """class robot"""
@@ -57,6 +57,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             then calls download.download_file
                 then returns download.speech_to_text
         """
+        sleep_duration = 2 # hardcoded time to liten
         self.audio_recorder.stopMicrophonesRecording()
         print("[INFO]: Speech recognition is in progress. Say something.")# pylint: disable=superfluous-parens
         while True:
@@ -65,16 +66,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             self.audio_recorder.startMicrophonesRecording(
                 "/home/nao/speech.wav", "wav", 48000, (0, 0, 1, 0))
             print("[INFO]: Robot is listening to you")# pylint: disable=superfluous-parens
-            controller.blink_eyes(self, [255, 255, 0])
+            controller.rotate_eyes(self.led_service, 0x0000FF, sleep_duration)
             break
 
         while True:
-            time.sleep(2) # time to listen
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
-            controller.blink_eyes(self, [150, 150, 0])
-
+            controller.blink_eyes(self.led_service, 0x0000FF)
             break
 
         download.download_file(self, "speech.wav")
@@ -88,14 +87,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
-        controller.set_awareness(self, False)
-        controller.say(self, "vad undrar du?")
+        controller.set_awareness(self.awareness_service, False)
+        controller.say(self.tts_service, "vad undrar du?")
         question = self.listen()
-        controller.say(self, "jag tror jag hittade svaret")
-        controller.set_awareness(self, True)
+        controller.say(self.tts_service, "jag tror jag hittade svaret")
+        controller.set_awareness(self.awareness_service, True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
-        controller.blink_eyes(self, [50, 50, 0])
+        controller.blink_eyes(self.led_service, 0xFFFFFF)
         return question
 
     def ask_wikipedia(self):
@@ -116,9 +115,9 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         answer, answer2 = tools.get_info_wikipedia(question)
         self.tablet_service.showImage(answer2)
-        controller.say(self, answer)
+        controller.say(self.tts_service, answer)
         time.sleep(2)
-        controller.reset_all(self)
+        controller.reset_all(self.led_service, self.tablet_service)
 
     def ask_google(self):
         """
@@ -137,6 +136,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
-        controller.say(self, "jag letade efter " + question)
-        time.sleep(8)
-        controller.reset_all(self)
+        controller.say(self.tts_service, "jag letade efter " + question)
+        time.sleep(5)
+        controller.reset_all(self.led_service, self.tablet_service)
