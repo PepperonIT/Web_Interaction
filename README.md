@@ -2,13 +2,17 @@
 Provides added web interactive funcationality, such as:
     *- speech_to_text*
     *- ask_wikipedia*
-    *- download_file*
+    *- ask_wikipedia_api*
     *- ask_google*
+    *- ask_google_:api*
+    *- download_file*
 
 *speech_to_text:* send the wav file to a backend, that transcribes it into swedish, return a json with text.  
-*ask_wikipedia:* Listens for a word/phrase, and return the first 2 sentences of that wikipedia search.  
 *download_file:* Downloads audio file thats recorded onto Pepper.  
-*ask_google:* Listens for a word/phrase, and return 1 image from google. custom search engine.
+*ask_wikipedia:* Listens for a word/phrase
+*ask_wikipedia_api:* Return the first 2 sentences of that wikipedia search.  
+*ask_google:* Listens for a word/phrase
+*ask_google_api:*  Return 1 image from google. custom search engine..  
 
 # tools / installation
 
@@ -20,7 +24,7 @@ The tools used are revolves around speech recognition, transcribing and API func
 In order to gain the enviroment, we are using a docker enviroment created by out rock paper and sciccors group, for further intallation instructions:
 
 ## server/whisper
-> [whisper](tools.md)
+> [whisper](https://github.com/D7017E/Whisper_server/blob/main/README.md)
 OpenAI's whisper is being used for transcribing. Server info TODO
 https://github.com/openai/whisper
 
@@ -46,15 +50,31 @@ https://pypi.org/project/paramiko/
 Request handler for restful API, sending audiofile for transcribing.
 https://pypi.org/project/requests/
 
+> [argparse](tools.md)
+Easy command line interface
+https://pypi.org/project/argparse/
+
+> [click](tools.md)
+further ease of handling CLI
+https://pypi.org/project/click/
+
 
 # Usage
-Currently the entire functionality is run from a while true loop in main, so in order to run ask_wikipedia you:
-```bash
-python main.py
-```
-and then provide a question after pepper has prompted you to by "Give me a question Wikipedia".
-## Examples
-Currently same as above, under "Usage".
+Currently we have a simple CLI in order to test what we'd like with different functions:
+-g, --google: for ask_google
+-w, --wikipedia: for ask_wikipedia
+-k, --key: optional argument for testing
 
+### example 1:
+```bash
+python ./src/python main.py -g
+```
+which calls the ask_google method which will prompt you to ask google as question.
+
+### example 2:
+```bash
+python ./src/python main.py -w -k stockholm
+```
+which will call the ask_wikipedia_api method which will input stockholm, so you can skip the recording process for testing.
 # License
 TODO.
