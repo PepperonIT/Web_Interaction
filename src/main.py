@@ -20,7 +20,6 @@ import click
 )
 def cli(wikipedia, key):
     """infinite loop for testing"""
-    pepper = Robot(config.IP_ADDRESS, config.PORT)
     if wikipedia:
         if key:
             pepper.ask_wikipedia_api(key)
@@ -35,4 +34,5 @@ def cli(wikipedia, key):
 
         
 if __name__ == '__main__':
+    pepper = Robot(config.IP_ADDRESS, config.PORT)
     cli()

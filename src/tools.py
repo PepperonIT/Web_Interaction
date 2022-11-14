@@ -30,7 +30,7 @@ def get_info_google(term):
     }
     # Define cseargs for search
     cseargs = {
-    "q": term + ";jpg/png/gif",
+    "q": term + ";jpg/png",
     "cx": config.GOOGLE_CX,
     "num": 1,
     "searchType": "image"
