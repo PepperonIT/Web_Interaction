@@ -6,13 +6,21 @@ Provides added web interactive funcationality, such as:
     *- ask_google*
     *- ask_google_:api*
     *- download_file*
+    *- listen*
+    *- listen_to*
+    *- set_language*
+    *- set_method*
 
 *speech_to_text:* send the wav file to a backend, that transcribes it into swedish, return a json with text.  
 *download_file:* Downloads audio file thats recorded onto Pepper.  
 *ask_wikipedia:* Listens for a word/phrase
 *ask_wikipedia_api:* Return the first 2 sentences of that wikipedia search.  
 *ask_google:* Listens for a word/phrase
-*ask_google_api:*  Return 1 image from google. custom search engine..  
+*ask_google_api:*  Return 1 image from google.
+*listen:* Listens and records a wav file
+*listen_to:* Listens and compares against a list of words
+*set_language:* Changes pepper and method languages if available.  
+*set method:* sets given method, e.g. wikipedia if available.
 
 # tools / installation
 
@@ -49,10 +57,6 @@ https://pypi.org/project/paramiko/
 > [requests](tools.md)
 Request handler for restful API, sending audiofile for transcribing.
 https://pypi.org/project/requests/
-
-> [argparse](tools.md)
-Easy command line interface
-https://pypi.org/project/argparse/
 
 > [click](tools.md)
 further ease of handling CLI
