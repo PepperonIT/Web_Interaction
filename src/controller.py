@@ -2,6 +2,7 @@
 Controller module
 Visual aid methods for Pepper that shows some interactivity
 """
+import wikipedia
 
 def blink_eyes(service, rgb):
     """
@@ -45,3 +46,61 @@ def set_awareness(service, state):
     else:
         service.pauseAwareness()
         print("[INFO]: Awareness is paused")# pylint: disable=superfluous-parens
+
+def set_language(service, dialog, language):
+    """
+    langauge: the given language
+    """
+    service.pause(True)
+    if language in PEPPER_LANGUAGES:
+        wikipedia.set_lang(language)
+        service.setLanguage(language)
+        dialog.setLanguage(language)
+        print("[SYSTEM]: Pepper and Wikipedia language set to: " + language)
+    else:
+        wikipedia.set_lang(language)
+        print("[SYSTEM]: Cannot choose: " + language)
+        print("[SYSTEM]: EXIT")
+        exit
+    service.pause(False)
+    return
+
+LANGUAGES = [
+    "Swedish",
+    "English",
+    "Japanese",
+    "French",
+    "Italian",
+    "German",
+    "Spanish",
+    "Chinese",
+    "MandarinTaiwan",
+    "Dutch",
+    "Arabic",
+    "Korean",
+    "Polish",
+    "Brazilian",
+    "Portuguese",
+    "Czech",
+    "Danish",
+    "Finish",
+    "Russian",
+    "Turkish",
+    "Norweigan",
+    "Greek"
+]
+
+METHODS = [
+    "Wikipedia",
+    "Google"
+]
+
+VERIFICATION = [
+    "yes",
+    "no"
+]
+
+PEPPER_LANGUAGES = [
+    "English",
+    "Swedish"
+]

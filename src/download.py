@@ -30,5 +30,5 @@ def speech_to_text(audio_file):# pylint: disable=no-self-use
         request = requests.post(
             url, files=audio_file)# Recieves the json with the transcibed text
         recognized = request.text[11:-2]# budget json handling, the text
-        print("####### \n: s2t:" + recognized + "\n #########")# pylint: disable=superfluous-parens
+        print("####### \n: s2t:" + recognized + "\n#######")# pylint: disable=superfluous-parens
     return recognized

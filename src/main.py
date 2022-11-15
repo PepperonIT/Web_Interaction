@@ -3,6 +3,7 @@ Main module
 """
 
 import config
+import controller
 import click
 from robot import Robot
 
@@ -30,6 +31,14 @@ def cli(wikipedia, key):
         else:
             PEPPER.ask_google()
 
+def start():
+    word = PEPPER.listen_to(controller.LANGUAGES)
+    controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, word)
+    method = PEPPER.listen_to(controller.METHODS)
+    PEPPER.set_method(method, controller.METHODS)
+
 if __name__ == '__main__':
     PEPPER = Robot(config.IP_ADDRESS, config.PORT)
-    cli()# pylint: disable=no-value-for-parameter
+    # cli()# pylint: disable=no-value-for-parameter
+    start()# pylint: disable=no-value-for-parameter
+    

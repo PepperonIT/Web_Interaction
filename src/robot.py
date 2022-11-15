@@ -57,7 +57,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             then calls download.download_file
                 then returns download.speech_to_text
         """
-        sleep_duration = 2 # hardcoded time to liten
+        sleep_duration = 3 # hardcoded time to liten
         self.audio_recorder.stopMicrophonesRecording()
         print("[INFO]: Speech recognition is in progress. Say something.")# pylint: disable=superfluous-parens
         while True:
@@ -78,6 +78,50 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
         download.download_file(self, "speech.wav")
         return download.speech_to_text("speech.wav")
+
+    def listen_to(self, vocabulary):
+        """
+        Listen and match the vocabulary which is passed as parameter.
+        vocabulary: list of approved words
+        """
+        sleep_duration = 2
+        self.speech_service.setLanguage("English")
+        self.speech_service.pause(True)
+        try:
+            self.speech_service.setVocabulary(vocabulary, True)
+            self.speech_service.unsubscribe("Test_ASR")
+        except RuntimeError as error:
+            print(error)
+            self.speech_service.removeAllContext()
+            self.speech_service.setVocabulary(vocabulary, True)
+            self.speech_service.subscribe("Test_ASR")
+        try:
+            print("[INFO]: Robot is listening to you...")
+            self.speech_service.pause(False)
+            controller.blink_eyes(self.led_service, 0x0000FF)
+            time.sleep(3)
+            words = self.memory_service.getData("WordRecognized")
+            print("[INFO]: Robot understood: '" + words[0] + "'")
+            controller.blink_eyes(self.led_service, 0xFFFFFF)
+            words = str(words[0])
+            word = words[6:-6]
+            print("[INFO]: In string format:" + word)
+            self.speech_service.unsubscribe("Test_ASR") 
+            return word
+            # return controller.set_language(self.speech_service, self.dialog_service, word)
+        except:
+            pass
+
+    def set_method(self, method, vocabulary):
+        if method in controller.METHODS:
+            if method == "Wikipedia":
+                return self.ask_wikipedia()
+            elif method == "Google":
+                return self.ask_google()
+        else:
+            print("[INFO]: Couldn't understand, please try again")
+            return self.listen_to(vocabulary)
+
 
     def ask(self):
         """
