@@ -11,7 +11,6 @@ def get_info_wikipedia(term):
     """
     term: A string as input into a wikipedia search
     """
-    wikipedia.set_lang("sv")
     summary = wikipedia.summary(term, sentences=1)
     page = wikipedia.page(term)
     wikiimage = page.images[0]
