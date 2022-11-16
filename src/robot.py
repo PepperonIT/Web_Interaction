@@ -86,32 +86,33 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         Listen and match the vocabulary which is passed as parameter.
         vocabulary: list of approved words
         """
-        sleep_duration = 2
+        sleep_duration = 3
         self.speech_service.pause(True)
         self.speech_service.setLanguage("English")
         try:
-            self.speech_service.unsubscribe("Test_ASR") 
             self.speech_service.setVocabulary(vocabulary, True)
         except RuntimeError as error:
+            print("###################### except #######################")
             print(error)
             self.speech_service.pause(True)
             self.speech_service.removeAllContext()
-            # self.speech_service.setVocabulary(vocabulary, True)
+            if self.speech_service.setVocabulary == False:
+                self.speech_service.setVocabulary(vocabulary, True)
             self.speech_service.subscribe("Test_ASR")
         try:
             print("[INFO]: Robot is listening to you...")
             self.speech_service.pause(False)
             controller.blink_eyes(self.led_service, 0x0000FF)
-            time.sleep(3)
+            time.sleep(sleep_duration)
             words = self.memory_service.getData("WordRecognized")
-            print("[INFO]: Robot understood: '" + words[0] + "'")
             controller.blink_eyes(self.led_service, 0xFFFFFF)
             words = str(words[0])
             word = words[6:-6]
             print("[RETURN]:" + word)
             return word
         except:
-            pass
+            print("ERROR")
+            return ""
 
     def set_method(self, method, vocabulary, dialog):
         if method in controller.METHODS:
@@ -119,9 +120,6 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
                 return self.ask_wikipedia(dialog)
             elif method == "Google":
                 return self.ask_google(dialog)
-        else:
-            print("[INFO]: Couldn't understand, please try again")
-            return self.listen_to(vocabulary)
 
 
     def ask(self, dialog):

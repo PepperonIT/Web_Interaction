@@ -8,29 +8,6 @@ import config
 import controller
 from robot import Robot
 import time
-
-def start_language(dialog):
-    """
-    Voice activated language selection
-    dialog: Pre determed script for Pepper to say in given language
-    """
-    controller.say(PEPPER.tts_service, dialog[5])
-    language = PEPPER.listen_to(controller.LANGUAGES)
-    # if pepper didn't recognize anything, run again
-    if language == "":
-        controller.say(PEPPER.tts_service, dialog[1])
-        time.sleep(1)
-        start_language(dialog)
-    # if the recognized language isn't compatible, run again
-    elif language not in controller.PEPPER:
-        controller.say(PEPPER.tts_service, dialog[7])
-        time.sleep(1)
-        start_language(dialog)
-    # if it made it through the checks, switch language
-    else:
-        controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
-        controller.set_dialog(language)
-        return language
     
 def start_method(dialog):   
     """
@@ -60,8 +37,6 @@ if __name__ == '__main__':
     dialog = controller.set_dialog(language)
     controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
     wiki_lang = dialog[4]
-    language = start_language(dialog)
-    dialog = controller.set_dialog(language)
     start_method(dialog)
 
     
