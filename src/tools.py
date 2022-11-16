@@ -23,7 +23,7 @@ def get_info_wikipedia(term, wiki_lang):
     except IndexError as error:
         print("no picture")
     
-    return summary, ""
+    return summary, " "
 
 def get_info_google(term):
     """
