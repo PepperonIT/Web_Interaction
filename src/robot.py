@@ -7,6 +7,7 @@ import time
 import config
 import qi
 import paramiko
+from cryptography.hazmat.backends import default_backend
 from scp import SCPClient
 import tools
 import controller
@@ -44,7 +45,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.audio_recorder = self.session.service("ALAudioRecorder")
         self.tablet_service = self.session.service("ALTabletService")
         self.led_service = self.session.service("ALLeds")
-
+        #self.dialog = controller.PEPPER_DIALOG_SWEDISH # custom made dialog language for pepper
         print("[INFO]: Robot is initialized at " + ip_address + ":" + port)# pylint: disable=superfluous-parens
         self.tablet_service.preLoadImage( # wiki logo
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
@@ -66,10 +67,11 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             self.audio_recorder.startMicrophonesRecording(
                 "/home/nao/speech.wav", "wav", 48000, (0, 0, 1, 0))
             print("[INFO]: Robot is listening to you")# pylint: disable=superfluous-parens
-            controller.rotate_eyes(self.led_service, 0x0000FF, sleep_duration)
+            controller.blink_eyes(self.led_service, 0x0000FF)
             break
 
         while True:
+            time.sleep(sleep_duration)
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
@@ -85,15 +87,16 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         vocabulary: list of approved words
         """
         sleep_duration = 2
-        self.speech_service.setLanguage("English")
         self.speech_service.pause(True)
+        self.speech_service.setLanguage("English")
         try:
+            self.speech_service.unsubscribe("Test_ASR") 
             self.speech_service.setVocabulary(vocabulary, True)
-            self.speech_service.unsubscribe("Test_ASR")
         except RuntimeError as error:
             print(error)
+            self.speech_service.pause(True)
             self.speech_service.removeAllContext()
-            self.speech_service.setVocabulary(vocabulary, True)
+            # self.speech_service.setVocabulary(vocabulary, True)
             self.speech_service.subscribe("Test_ASR")
         try:
             print("[INFO]: Robot is listening to you...")
@@ -105,65 +108,69 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             controller.blink_eyes(self.led_service, 0xFFFFFF)
             words = str(words[0])
             word = words[6:-6]
-            print("[INFO]: In string format:" + word)
-            self.speech_service.unsubscribe("Test_ASR") 
+            print("[RETURN]:" + word)
             return word
-            # return controller.set_language(self.speech_service, self.dialog_service, word)
         except:
             pass
 
-    def set_method(self, method, vocabulary):
+    def set_method(self, method, vocabulary, dialog):
         if method in controller.METHODS:
             if method == "Wikipedia":
-                return self.ask_wikipedia()
+                return self.ask_wikipedia(dialog)
             elif method == "Google":
-                return self.ask_google()
+                return self.ask_google(dialog)
         else:
             print("[INFO]: Couldn't understand, please try again")
             return self.listen_to(vocabulary)
 
 
-    def ask(self):
+    def ask(self, dialog):
         """
         Helper method that sets the appropriate expressensions
             and then calls listen, returning the question(string)
         """
+        question = dialog[0]
+        confusion = dialog[1]
+        success = dialog[2]
+        failure = dialog[3]
+
         time.sleep(1)
         self.speech_service.setAudioExpression(False)
         self.speech_service.setVisualExpression(False)
         controller.set_awareness(self.awareness_service, False)
-        controller.say(self.tts_service, "vad undrar du?")
+        controller.say(self.tts_service, question)
         question = self.listen()
-        controller.say(self.tts_service, "jag tror jag hittade svaret")
+        controller.say(self.tts_service, success)
         controller.set_awareness(self.awareness_service, True)
         self.speech_service.setAudioExpression(True)
         self.speech_service.setVisualExpression(True)
         controller.blink_eyes(self.led_service, 0xFFFFFF)
         return question
 
-    def ask_wikipedia(self):
+    def ask_wikipedia(self, dialog):
         """
         Calls self.ask to get the question
             Calls get_info_wikipedia with a string as input
                 then says the output, shows the output picutre
         """
+        wiki_lang = dialog[4]
         self.tablet_service.showImage(
             "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png")
         time.sleep(1)
-        question = self.ask()
-        self.ask_wikipedia_api(question)
+        question = self.ask(dialog)
+        self.ask_wikipedia_api(question, wiki_lang)
 
-    def ask_wikipedia_api(self, question):
+    def ask_wikipedia_api(self, question, wiki_lang):
         """
         question: the string input to wiki api
         """
-        answer, answer2 = tools.get_info_wikipedia(question)
+        answer, answer2 = tools.get_info_wikipedia(question, wiki_lang)
         self.tablet_service.showImage(answer2)
         controller.say(self.tts_service, answer)
         time.sleep(2)
         controller.reset_all(self.led_service, self.tablet_service)
 
-    def ask_google(self):
+    def ask_google(self, dialog):
         """
         Calls self.ask to get the question
             Calls get_info_google with a string as input
@@ -171,7 +178,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
-        question = self.ask()
+        question = self.ask(dialog)
         self.ask_google_api(question)
 
     def ask_google_api(self, question):
@@ -180,6 +187,5 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
-        controller.say(self.tts_service, "jag letade efter " + question)
         time.sleep(5)
         controller.reset_all(self.led_service, self.tablet_service)
