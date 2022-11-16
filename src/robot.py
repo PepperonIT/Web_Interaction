@@ -17,6 +17,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     """class robot"""
     def __init__(self, ip_address, port):
         """
+        Initializes qi session, ssh and the pepper services.
         ip: Peppers IP address
         port: Peppers port
         """
@@ -62,6 +63,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.audio_recorder.stopMicrophonesRecording()
         print("[INFO]: Speech recognition is in progress. Say something.")# pylint: disable=superfluous-parens
         while True:
+            """ Sets up the recording process """
             print(self.memory_service.getData("ALSpeechRecognition/Status"))# pylint: disable=superfluous-parens
             # if self.memory_service.getData("ALSpeechRecognition/Status") == "SpeechDetected":
             self.audio_recorder.startMicrophonesRecording(
@@ -71,13 +73,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             break
 
         while True:
+            """ Listens to you for the sleep_duration """
             time.sleep(sleep_duration)
             # if self.memory_service.getData("SpeechDetected") == False:
             self.audio_recorder.stopMicrophonesRecording()
             print("[INFO]: Robot is not listening to you")# pylint: disable=superfluous-parens
             controller.blink_eyes(self.led_service, 0x0000FF)
             break
-
+        """ Need to download the file onto Pepper in order to access it"""
         download.download_file(self, "speech.wav")
         return download.speech_to_text("speech.wav")
 
@@ -115,6 +118,12 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             return ""
 
     def set_method(self, method, vocabulary, dialog):
+        """
+        Sets which method you would like to call
+        method: string with method name
+        vocabulary: list of appropriate words
+        dialog: script in appropriate language for pepper to speak
+        """
         if method in controller.METHODS:
             if method == "Wikipedia":
                 return self.ask_wikipedia(dialog)
@@ -126,6 +135,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         Helper method that sets the appropriate expressensions
             and then calls listen, returning the question(string)
+        dialog: Custom scripted list of phrases for Pepper to TTS
         """
         question = dialog[0]
         confusion = dialog[1]
@@ -150,6 +160,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         Calls self.ask to get the question
             Calls get_info_wikipedia with a string as input
                 then says the output, shows the output picutre
+        dialog: Custom scripted phrases for Pepper to use with TTS
         """
         wiki_lang = dialog[4]
         self.tablet_service.showImage(
@@ -160,7 +171,9 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
     def ask_wikipedia_api(self, question, wiki_lang):
         """
+        End halv of ask_wikipedia, it calls the helper function get_info_wikipedia
         question: the string input to wiki api
+        wiki_lang: the language for wikipedia to search in, e.g. "sv"
         """
         answer, answer2 = tools.get_info_wikipedia(question, wiki_lang)
         self.tablet_service.showImage(answer2)
@@ -173,6 +186,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         Calls self.ask to get the question
             Calls get_info_google with a string as input
                 then shows the output picutre
+        dialog: Custom scripted phrases for Pepper to use with TTS
         """
         self.tablet_service.showImage(
             "https://banffventureforum.com/wp-content/uploads/2018/08/Google-Transparent.png")
@@ -181,6 +195,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
     def ask_google_api(self, question):
         """
+        End half of ask_google, it calls the helper function get_info_google
         question: string input to google api
         """
         answer = tools.get_info_google(question)

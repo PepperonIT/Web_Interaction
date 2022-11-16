@@ -6,26 +6,37 @@ import wikipedia
 
 def blink_eyes(service, rgb):
     """
+    Stupid name, it just lights the eyes up in a given color
     rgb: the hexadecimal color value
     """
     service.fadeRGB('AllLeds', rgb, 1.0)
 
 def rotate_eyes(service, rgb, sleep):
     """
+    Makes the eye rotate with a color for a given time
     rgb: the hexadecimal color value
+    sleep: duration of spin (also works as a sleep for Pepper)
     """
     service.rotateEyes(rgb, 1.0, sleep)
 
 def reset_leds(service):
-    """Reset the eyes"""
+    """
+    Reset the eyes
+    service: led_service
+    """
     blink_eyes(service, 0xFFFFFF)
 
 def reset_tablet(service):
-    """Reset the tablet"""
+    """Reset the tablet
+    service: tablet_service
+    """
     service.hideImage()
 
 def reset_all(led_service, tablet_service):
-    """Resets the entire pepper thingy"""
+    """Resets the entire pepper thingy
+    led_service: led_service
+    tablet_service: tablet_service
+    """
     reset_tablet(tablet_service)
     reset_leds(led_service)
 
@@ -49,13 +60,13 @@ def set_awareness(service, state):
 
 def set_language(service, dialog, language):
     """
+    Sets Peppers TTS language if a valid one
+    dialog: custom scripted list of words for Pepper to TTS
     langauge: the given language
     """
     service.pause(True)
     if language in PEPPER:
-        # service.setLanguage(language)
         dialog.setLanguage(language)
-        #wikipedia.set_lang(language)
         print("[SYSTEM]: Pepper language set to: " + language)
         set_dialog(language)
     else:
@@ -65,6 +76,10 @@ def set_language(service, dialog, language):
     return language
 
 def set_dialog(language):
+    """
+    Set a given language script for peppers TTS to use
+    language: Given language, e.g. "Swedish"
+    """
     if language == "Swedish":
         return PEPPER_DIALOG_SWEDISH
     elif language == "English":

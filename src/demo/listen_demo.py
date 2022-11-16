@@ -55,6 +55,11 @@ def start_method(dialog):
 
 
 if __name__ == '__main__':
+    """
+    Sets up for pepper with a starting language,
+    Which prompts you for your wanted method,
+    and finally runs the given method
+    """
     PEPPER = Robot(config.IP_ADDRESS, config.PORT)
     language = "Swedish" # START LANGUAGE
     dialog = controller.set_dialog(language)
@@ -63,5 +68,3 @@ if __name__ == '__main__':
     language = start_language(dialog)
     dialog = controller.set_dialog(language)
     start_method(dialog)
-
-    

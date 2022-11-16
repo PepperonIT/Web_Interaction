@@ -8,6 +8,7 @@ import requests
 
 def download_file(self, file_name):
     """
+    Downloads an audiofile onto Pepper so we can use it
     file_name: Input audio file to download and store
     """
     self.scp.get(file_name, local_path="/tmp/")
@@ -16,11 +17,10 @@ def download_file(self, file_name):
 
 def speech_to_text(audio_file):# pylint: disable=no-self-use
     """
-    audio_file: Input audio file to send to the server
-
     Sends the audio file to the server for transcribing,
         recieves a json of the transcribed text
             returns the text in a string format
+    audio_file: Input audio file to send to the server
     """
     url = ('http://' + config.SERVER_IP_ADDRESS +
            ':' + config.SERVER_PORT + '/recieve')# server request endpoint

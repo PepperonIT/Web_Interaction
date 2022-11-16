@@ -11,7 +11,6 @@ def get_info_wikipedia(term, wiki_lang):
     """
     term: A string as input into a wikipedia search
     """
-    print(wiki_lang)
     wikipedia.set_lang(wiki_lang)
     summary = wikipedia.summary(term, sentences=1)
     try:
@@ -25,9 +24,9 @@ def get_info_wikipedia(term, wiki_lang):
     
     return summary, "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png"
 
-
 def get_info_google(term):
     """
+    Helper function that calls Google's API with custom CE and settings
     term: A string as input into a google search engine
     """
     # Define buildargs for api api
