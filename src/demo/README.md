@@ -6,6 +6,8 @@ Prepared "main" files for demo purposes. They link to the main file path "./src/
 
     In general one can follow along in the terminal to view the steps taken when she goes through a given program.
 
+    In each demo file, under "__main__" you can chose which language you want pepper to boot in, write either "Swedish" or "English"
+
     *NOTE:* This entire README.md is assuming you are in the demo working directory: "./src/demo/"
     
 ## cli_demo
@@ -41,9 +43,9 @@ python google_demo.py
     - Pepper will prompt us to ask her something, to which we respond "cat"
 
 ## listen_demo
-Demonstrates the use of voice navigation with Pepper. This is a really newely introduced function so it's not bug free nor the easiest to explain. Basically you are (without Pepper promting you to) to first provide a language; Swedish or English. Then you are to provide a method; Wikipedia or Google.   
+Demonstrates the use of voice navigation with Pepper. This is a really newely introduced function so it's not bug free nor the easiest to explain. Basically you are to first provide a language; Swedish or English. Then you are to provide a method; Wikipedia or Google.   
 
-Follow along in the terminal for the ques for when to talk.
+Follow along in the terminal for the ques for when to talk. You can also listen to her prompts.
 ```
 Robot is listening to you...
 ```
@@ -53,19 +55,42 @@ If we want to run Pepper in Swedish to ask Google a question:
 ```bash
 python listen_demo.py
 ```
-    1. look at the terminal for the first que to answer "Swedish":
+    1. look at the terminal or listen for the promt. Answer "Swedish":
 ```
 Robot is listening to you...
 ```
 (we say:) SWEDISH
 
-    2. look at the terminal for the second que to answer "Google":
+    2. look at the terminal or listen for the prompt. for the second que to answer "Google":
 ```
 Robot is listening to you...
 ```
 (we say:) GOOGLE
 
     3. Now procede to follow Peppers prompt of what you want her to Google.
+
+## listen_method_demo
+Demonstrates the use of voice navigation with Pepper. This is a really newely introduced function so it's not bug free nor the easiest to explain. You are to provide a method; Wikipedia or Google.   
+
+Follow along in the terminal for the ques for when to talk. You can also listen to her ques.
+```
+Robot is listening to you...
+```
+
+### example 1.
+If we want to run Pepper in Swedish to ask Wikipedia a question:
+```bash
+python listen_demo.py
+```
+
+    1. look at the terminal or listen for the prompt. for the second que to answer "Wikipedia":
+```
+Robot is listening to you...
+```
+(we say:) Wikipedia
+
+    2. Now procede to follow Peppers prompt of what you want her to search on Wikipedia.
+
 
 ## wikipedia_demo
 A simple call to the ask_wikipedia method, which will have Pepper prompt us for a question which she will process and return the first sentence from a wikipedia page and a related picture.
