@@ -7,10 +7,12 @@ import config
 import wikipedia
 import search_google.api
 
-def get_info_wikipedia(term):
+def get_info_wikipedia(term, wiki_lang):
     """
     term: A string as input into a wikipedia search
     """
+    print(wiki_lang)
+    wikipedia.set_lang(wiki_lang)
     summary = wikipedia.summary(term, sentences=1)
     page = wikipedia.page(term)
     wikiimage = page.images[0]

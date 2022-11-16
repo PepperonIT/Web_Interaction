@@ -52,18 +52,25 @@ def set_language(service, dialog, language):
     langauge: the given language
     """
     service.pause(True)
-    if language in PEPPER_LANGUAGES:
-        wikipedia.set_lang(language)
+    if language in PEPPER:
         service.setLanguage(language)
         dialog.setLanguage(language)
-        print("[SYSTEM]: Pepper and Wikipedia language set to: " + language)
+        #wikipedia.set_lang(language)
+        print("[SYSTEM]: Pepper language set to: " + language)
+        set_dialog(language)
     else:
-        wikipedia.set_lang(language)
-        print("[SYSTEM]: Cannot choose: " + language)
-        print("[SYSTEM]: EXIT")
+        print("[SYSTEM]: EXIT can not chose that language")
         exit
     service.pause(False)
     return
+
+def set_dialog(language):
+    if language == "Swedish":
+        return PEPPER_DIALOG_SWEDISH
+    elif language == "English":
+        return PEPPER_DIALOG_ENGLISH
+    else:
+        exit
 
 LANGUAGES = [
     "Swedish",
@@ -100,7 +107,23 @@ VERIFICATION = [
     "no"
 ]
 
-PEPPER_LANGUAGES = [
-    "English",
-    "Swedish"
+PEPPER = [
+    "Swedish",
+    "English"
+]
+
+PEPPER_DIALOG_SWEDISH = [
+    "hej, vad undrar du?",              # 0 = question
+    "jag fattade inte, vi provar igen!",# 1 = confusion
+    "jag hittade svaret!",              # 2 = success
+    "jag kunde inte hitta svaret!",      # 3 = failure
+    "sv"                           # 4 = language
+]
+
+PEPPER_DIALOG_ENGLISH = [
+    "hello, what's your question?",     # 0 = question
+    "I didn't understand, let's try again",# 1 = confusion
+    "I found the answer!",              # 2 = success
+    "Sorry I couldn't find the answer",      # 3 = failure
+    "en"                               # 4 = language
 ]
