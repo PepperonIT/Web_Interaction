@@ -9,7 +9,10 @@ import controller
 from robot import Robot
 
 if __name__ == '__main__':
+
+    language = "Swedish" # change language
+
     PEPPER = Robot(config.IP_ADDRESS, config.PORT)
-    while True:
-        PEPPER.ask_wikipedia()
-    
+    controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
+    dialog = controller.set_dialog(language)
+    PEPPER.ask_wikipedia(dialog)
