@@ -24,16 +24,23 @@ def cli(wikipedia, key):
     """infinite loop for testing"""
     if wikipedia:
         if key:
-            PEPPER.ask_wikipedia_api(key)
+            PEPPER.ask_wikipedia_api(key, wiki_lang)
         else:
-            PEPPER.ask_wikipedia()
+            PEPPER.ask_wikipedia(dialog)
     if not wikipedia:
         if key:
             PEPPER.ask_google_api(key)
         else:
-            PEPPER.ask_google()
+            PEPPER.ask_google(dialog)
 
 if __name__ == '__main__':
+
+    language = "Swedish" # change language
+
     PEPPER = Robot(config.IP_ADDRESS, config.PORT)
+    controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
+    dialog = controller.set_dialog(language)
+    wiki_lang = dialog[4]
+    
     cli()# pylint: disable=no-value-for-parameter
     
