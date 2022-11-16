@@ -23,7 +23,8 @@ def get_info_wikipedia(term, wiki_lang):
     except IndexError as error:
         print("no picture")
     
-    return summary, " "
+    return summary, "https://upload.wikimedia.org/wikipedia/commons/6/61/Wikipedia-logo-transparent.png"
+
 
 def get_info_google(term):
     """
