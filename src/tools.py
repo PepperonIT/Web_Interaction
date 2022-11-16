@@ -14,11 +14,16 @@ def get_info_wikipedia(term, wiki_lang):
     print(wiki_lang)
     wikipedia.set_lang(wiki_lang)
     summary = wikipedia.summary(term, sentences=1)
-    page = wikipedia.page(term)
-    wikiimage = page.images[0]
-    print("[INFO]: wikiimage: " + wikiimage)# pylint: disable=superfluous-parens
+    try:
+        page = wikipedia.page(term)
+        wikiimage = page.images[0]
+        print("[INFO]: wikiimage: " + wikiimage)# pylint: disable=superfluous-parens
+        return summary, wikiimage
 
-    return summary, wikiimage
+    except IndexError as error:
+        print("no picture")
+    
+    return summary, ""
 
 def get_info_google(term):
     """
