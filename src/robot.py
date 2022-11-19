@@ -200,5 +200,5 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         """
         answer = tools.get_info_google(question)
         self.tablet_service.showImage(answer)
-        time.sleep(5)
+        time.sleep(10)
         controller.reset_all(self.led_service, self.tablet_service)
