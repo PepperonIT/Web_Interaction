@@ -12,7 +12,7 @@ def get_info_wikipedia(term, wiki_lang):
     term: A string as input into a wikipedia search
     """
     wikipedia.set_lang(wiki_lang)
-    summary = wikipedia.summary(term, sentences=1)
+    summary = wikipedia.summary(term, sentences=2)
     try:
         page = wikipedia.page(term)
         wikiimage = page.images[0]
