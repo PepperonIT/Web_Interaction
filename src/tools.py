@@ -48,3 +48,12 @@ def get_info_google(term):
     links = str(links[0])
     print("[INFO]: google_link: " + links)# pylint: disable=superfluous-parens
     return links
+
+
+def get_info_youtube(term):
+    """
+    Helper function that calls Youtubes API
+    """
+    links = "P8oaIJy0qA8"
+    return links
+    

@@ -202,3 +202,20 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.showImage(answer)
         time.sleep(10)
         controller.reset_all(self.led_service, self.tablet_service)
+        
+        
+    def ask_youtube(self, dialog):
+        
+        self.tablet_service.showImage(
+            "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.logo.wine%2Flogo%2FYouTube&psig=AOvVaw1xqrR-ztksqHUkdg9A7uo1&ust=1669209441700000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNin2_DvwfsCFQAAAAAdAAAAABAT"
+        )
+        question = self.ask(dialog)
+        self.ask_youtube_api(question)
+    
+
+    def ask_youtube_api(self, question):
+        answer = tools.get_info_youtube(question)
+        self.tablet_service.loadUrl("https://www.youtube.com/embed/"+answer)
+        self.tablet_service.showWebview()        
+        time.sleep(15)
+        controller.reset_all(self.led_service, self.tablet_service)

@@ -10,27 +10,29 @@ import time
 
 @click.command()
 @click.option(
-    '--wikipedia/--google',
-    '-w/-g',
-    help='Whether you want to ask wikipedia or google.'
+    '--method',
+    '-m',
+    help='Whether you want to ask wikipedia, google or youtube.'
 )
 @click.option(
     '--key',
     '-k',
     help='If you do not want to talk to pepper, but write the input'
 )
-def cli(wikipedia, key):
+def cli(method, key):
     """infinite loop for testing"""
-    if wikipedia:
+    if method=="wikipedia":
         if key:
             PEPPER.ask_wikipedia_api(key, wiki_lang)
         else:
             PEPPER.ask_wikipedia(dialog)
-    if not wikipedia:
+    elif method=="google":
         if key:
             PEPPER.ask_google_api(key)
         else:
             PEPPER.ask_google(dialog)
+    elif method=="youtube":
+        PEPPER.ask_youtube()
 
 def start_language(dialog):
     """
