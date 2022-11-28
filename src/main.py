@@ -32,7 +32,10 @@ def cli(method, key):
         else:
             PEPPER.ask_google(dialog)
     elif method=="youtube":
-        PEPPER.ask_youtube()
+        if key:
+            PEPPER.ask_youtube_api(key)
+        else:
+            PEPPER.ask_youtube(dialog)
 
 def start_language(dialog):
     """
@@ -91,6 +94,7 @@ if __name__ == '__main__':
     dialog = controller.set_dialog(language)
     controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
     wiki_lang = dialog[4]
+    cli()
     language = start_language(dialog)
     dialog = controller.set_dialog(language)
     start_method(dialog)

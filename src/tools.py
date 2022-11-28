@@ -6,6 +6,8 @@ Helper tools for the main funtions
 import config
 import wikipedia
 import search_google.api
+import youtube_websearch as yt
+
 
 def get_info_wikipedia(term, wiki_lang):
     """
@@ -54,6 +56,13 @@ def get_info_youtube(term):
     """
     Helper function that calls Youtubes API
     """
-    links = "P8oaIJy0qA8"
-    return links
+    search_results = yt.video_search(term)
+    print(search_results)# pylint: disable=superfluous-parens
+    links = search_results[0]["videoId"]
+    print("[INFO]: youtube_link: " + links)# pylint: disable=superfluous-parens
+    length = search_results[0]["lengthText"]
+    split = length.split()
+    dur = int(split[0]) * 60 + int(split[2]) #budget, only works if its min+sec, e.g. if its sub 1min or 1h+ doesnt work
+    print(dur)
+    return links, dur
     

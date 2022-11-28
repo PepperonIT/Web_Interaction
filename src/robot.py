@@ -214,8 +214,11 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     
 
     def ask_youtube_api(self, question):
-        answer = tools.get_info_youtube(question)
-        self.tablet_service.loadUrl("https://www.youtube.com/embed/"+answer)
+        answer, dur = tools.get_info_youtube(question)
+        #self.tablet_service.loadUrl("https://www.youtube.com/v/"+answer)
+        video = "https://www.youtube.com/embed/"+answer
+        self.tablet_service.loadUrl(video)
+        print("[INFO]: Youtube full link: " + video)
         self.tablet_service.showWebview()        
-        time.sleep(15)
+        time.sleep(dur)
         controller.reset_all(self.led_service, self.tablet_service)
