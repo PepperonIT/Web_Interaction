@@ -4,11 +4,11 @@ Holds the methods for listening as well as the functions that call them
 """
 
 import time
-import config
 import qi
 import paramiko
 from cryptography.hazmat.backends import default_backend
 from scp import SCPClient
+import config
 import tools
 import controller
 import download
@@ -95,15 +95,14 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         try:
             self.speech_service.setVocabulary(vocabulary, True)
         except RuntimeError as error:
-            print("###################### except #######################")
-            print(error)
+            print(error)# pylint: disable=superfluous-parens
             self.speech_service.pause(True)
             self.speech_service.removeAllContext()
             if self.speech_service.setVocabulary == False:
                 self.speech_service.setVocabulary(vocabulary, True)
             self.speech_service.subscribe("Test_ASR")
         try:
-            print("[INFO]: Robot is listening to you...")
+            print("[INFO]: Robot is listening to you...")# pylint: disable=superfluous-parens
             self.speech_service.pause(False)
             controller.blink_eyes(self.led_service, 0x0000FF)
             time.sleep(sleep_duration)
@@ -111,10 +110,10 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
             controller.blink_eyes(self.led_service, 0xFFFFFF)
             words = str(words[0])
             word = words[6:-6]
-            print("[RETURN]:" + word)
+            print("[RETURN]:" + word)# pylint: disable=superfluous-parens
             return word
         except:
-            print("ERROR")
+            print("ERROR")# pylint: disable=superfluous-parens
             return ""
 
     def set_method(self, method, vocabulary, dialog):
@@ -202,21 +201,19 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.showImage(answer)
         time.sleep(10)
         controller.reset_all(self.led_service, self.tablet_service)
-        
-        
+
     def ask_youtube(self, dialog):
         """
         Calls self.ask to get the question
             Calls get_info_youtube with a string as input
                 then shows the first youtube video on its display
         dialog: Custom scripted phrases for Pepper to use with TTS
-        """        
+        """
         self.tablet_service.showImage(
             "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.logo.wine%2Flogo%2FYouTube&psig=AOvVaw1xqrR-ztksqHUkdg9A7uo1&ust=1669209441700000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNin2_DvwfsCFQAAAAAdAAAAABAT"
         )
         question = self.ask(dialog)
         self.ask_youtube_api(question)
-    
 
     def ask_youtube_api(self, question):
         """
@@ -226,7 +223,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         answer, dur = tools.get_info_youtube(question)
         video = "https://www.youtube.com/embed/"+answer
         self.tablet_service.loadUrl(video)
-        print("[INFO]: Youtube full link: " + video)
+        print("[INFO]: Youtube full link: " + video)# pylint: disable=superfluous-parens
         self.tablet_service.showWebview()        
         time.sleep(dur)
         controller.reset_all(self.led_service, self.tablet_service)

@@ -3,8 +3,8 @@ Download module
 Allows Pepper to download the recorded audio file
 """
 
-import config
 import requests
+import config
 
 def download_file(self, file_name):
     """
