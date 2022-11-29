@@ -114,7 +114,8 @@ LANGUAGES = [
 
 METHODS = [
     "Wikipedia",
-    "Google"
+    "Google",
+    "Youtube"
 ]
 
 VERIFICATION = [

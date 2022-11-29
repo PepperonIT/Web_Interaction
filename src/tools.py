@@ -54,15 +54,26 @@ def get_info_google(term):
 
 def get_info_youtube(term):
     """
-    Helper function that calls Youtubes API
+    Helper function that calls Youtubes API, fetching video url and time
+    term: A string as input into a youtube websearch package
     """
     search_results = yt.video_search(term)
-    print(search_results)# pylint: disable=superfluous-parens
+    # print(search_results)# pylint: disable=superfluous-parens
     links = search_results[0]["videoId"]
     print("[INFO]: youtube_link: " + links)# pylint: disable=superfluous-parens
     length = search_results[0]["lengthText"]
     split = length.split()
-    dur = int(split[0]) * 60 + int(split[2]) #budget, only works if its min+sec, e.g. if its sub 1min or 1h+ doesnt work
+    print(split)
+    """set duration depending on how long the video is (sec, min+sec or hours+min+sec)"""
+    if len(split) == 2:
+        dur = int(split[0])
+    elif len(split) == 4:
+        dur = int(split[0]) * 60 + int(split[2]) 
+    elif len(split) == 6:
+        dur = int(split[0]) * 360 + int(split[2]) * 60 + int(split[4])
+        return
+    else:
+        dur = 15
     print(dur)
     return links, dur
     

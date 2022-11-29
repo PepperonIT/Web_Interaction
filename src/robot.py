@@ -171,7 +171,7 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
 
     def ask_wikipedia_api(self, question, wiki_lang):
         """
-        End halv of ask_wikipedia, it calls the helper function get_info_wikipedia
+        End half of ask_wikipedia, it calls the helper function get_info_wikipedia
         question: the string input to wiki api
         wiki_lang: the language for wikipedia to search in, e.g. "sv"
         """
@@ -205,7 +205,12 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         
         
     def ask_youtube(self, dialog):
-        
+        """
+        Calls self.ask to get the question
+            Calls get_info_youtube with a string as input
+                then shows the first youtube video on its display
+        dialog: Custom scripted phrases for Pepper to use with TTS
+        """        
         self.tablet_service.showImage(
             "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.logo.wine%2Flogo%2FYouTube&psig=AOvVaw1xqrR-ztksqHUkdg9A7uo1&ust=1669209441700000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNin2_DvwfsCFQAAAAAdAAAAABAT"
         )
@@ -214,8 +219,11 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
     
 
     def ask_youtube_api(self, question):
+        """
+        End half of ask_youtube, it calls the helper function get_info_youtube
+        question: string input to google api
+        """
         answer, dur = tools.get_info_youtube(question)
-        #self.tablet_service.loadUrl("https://www.youtube.com/v/"+answer)
         video = "https://www.youtube.com/embed/"+answer
         self.tablet_service.loadUrl(video)
         print("[INFO]: Youtube full link: " + video)
