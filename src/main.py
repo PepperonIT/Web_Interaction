@@ -10,27 +10,32 @@ import time
 
 @click.command()
 @click.option(
-    '--wikipedia/--google',
-    '-w/-g',
-    help='Whether you want to ask wikipedia or google.'
+    '--method',
+    '-m',
+    help='Whether you want to ask wikipedia, google or youtube.'
 )
 @click.option(
     '--key',
     '-k',
     help='If you do not want to talk to pepper, but write the input'
 )
-def cli(wikipedia, key):
+def cli(method, key):
     """infinite loop for testing"""
-    if wikipedia:
+    if method == "wikipedia":
         if key:
-            PEPPER.ask_wikipedia_api(key, wiki_lang)
+            PEPPER.ask_wikipedia_api(key, WIKI_LANG)
         else:
-            PEPPER.ask_wikipedia(dialog)
-    if not wikipedia:
+            PEPPER.ask_wikipedia(DIALOG)
+    elif method == "google":
         if key:
             PEPPER.ask_google_api(key)
         else:
-            PEPPER.ask_google(dialog)
+            PEPPER.ask_google(DIALOG)
+    elif method == "youtube":
+        if key:
+            PEPPER.ask_youtube_api(key)
+        else:
+            PEPPER.ask_youtube(DIALOG)
 
 def start_language(dialog):
     """
@@ -43,23 +48,23 @@ def start_language(dialog):
     if language == "":
         controller.say(PEPPER.tts_service, dialog[1])
         time.sleep(1)
-        start_language(dialog)
+        return start_language(dialog)
     # if the recognized language isn't compatible, run again
     elif language not in controller.PEPPER:
         controller.say(PEPPER.tts_service, dialog[7])
         time.sleep(1)
-        start_language(dialog)
+        return start_language(dialog)
     # if it made it through the checks, switch language
     else:
         controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
         controller.set_dialog(language)
         return language
-    
-def start_method(dialog):   
+
+def start_method(dialog):
     """
     Voice activated decision of which method to run
     dialog: Pre determed script for Pepper to say in given language
-    """ 
+    """
     controller.say(PEPPER.tts_service, dialog[6])
     method = PEPPER.listen_to(controller.METHODS)
     # if pepper didn't recognize anything, run again
@@ -85,11 +90,12 @@ if __name__ == '__main__':
     and finally runs the given method with given lang
     """
     PEPPER = Robot(config.IP_ADDRESS, config.PORT)
-    language = "Swedish" # START LANGUAGE
-    dialog = controller.set_dialog(language)
-    controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, language)
-    wiki_lang = dialog[4]
-    language = start_language(dialog)
-    dialog = controller.set_dialog(language)
-    start_method(dialog)
+    LANGUAGE = "Swedish"# pylint: disable=redefined-outer-name
+    DIALOG = controller.set_dialog(LANGUAGE)# pylint: disable=redefined-outer-name
+    controller.set_language(PEPPER.speech_service, PEPPER.dialog_service, LANGUAGE)
+    WIKI_LANG = DIALOG[4]
+    cli()
+    LANGUAGE = start_language(DIALOG)
+    DIALOG = controller.set_dialog(LANGUAGE)
+    start_method(DIALOG)
     
