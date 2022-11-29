@@ -225,5 +225,5 @@ class Robot:# pylint: disable=too-many-instance-attributes, old-style-class
         self.tablet_service.loadUrl(video)
         print("[INFO]: Youtube full link: " + video)# pylint: disable=superfluous-parens
         self.tablet_service.showWebview()        
-        time.sleep(dur)
+        time.sleep(dur + 10) # video time + x for start delay
         controller.reset_all(self.led_service, self.tablet_service)

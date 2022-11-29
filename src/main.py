@@ -25,17 +25,17 @@ def cli(method, key):
         if key:
             PEPPER.ask_wikipedia_api(key, WIKI_LANG)
         else:
-            PEPPER.ask_wikipedia(dialog)
+            PEPPER.ask_wikipedia(DIALOG)
     elif method == "google":
         if key:
             PEPPER.ask_google_api(key)
         else:
-            PEPPER.ask_google(dialog)
+            PEPPER.ask_google(DIALOG)
     elif method == "youtube":
         if key:
             PEPPER.ask_youtube_api(key)
         else:
-            PEPPER.ask_youtube(dialog)
+            PEPPER.ask_youtube(DIALOG)
 
 def start_language(dialog):
     """
