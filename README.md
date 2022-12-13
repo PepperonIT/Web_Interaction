@@ -96,4 +96,4 @@ python ./src/python main.py -y -k madonna
 ```
 which will call the ask_youtube_api method which will input madonna, so you can skip the recording process for testing.
 # License
-TODO.
+MIT License
