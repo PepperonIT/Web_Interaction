@@ -3,7 +3,7 @@ scp==0.14.4
 paramiko==2.11.0
 requests==2.7.0
 qi==3.0.0
-SpeechRecognition==3.8.1
 search_google==1.2.1
 argparse==1.4.0
 click==7.1.2
+youtube_websearch==1.0.1
