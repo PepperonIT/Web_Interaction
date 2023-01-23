@@ -8,7 +8,7 @@ RUN wget -P ~/Downloads https://community-static.aldebaran.com/resources/2.5.10/
 
 ENV PYTHONPATH=${PYTHONPATH}:/etc/python2.7/python-naoqi-sdk/lib/python2.7/site-packages
 
-COPY requirements.txt ./
+COPY ../requirements.txt ./
 RUN pip2 install -r requirements.txt
 
 COPY . .
