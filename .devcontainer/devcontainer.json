@@ -7,7 +7,6 @@
         }
     },
 
-    "forwardPorts": [],
+    "forwardPorts": []
 
-    "postCreateCommand": "bash .devcontainer/install-dev-tools.sh"
 }
